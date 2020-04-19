@@ -1,0 +1,10 @@
+name: cite
+<span class="cite">
+{%- for item in obj.citation() -%}
+  {%- if item.idref and item.idref.bibitem.url -%}
+  <a href="{{ item.idref.bibitem.url }}">{{ item }}</a>
+  {%- else -%}
+  {{ item }}
+  {%- endif -%}
+{%- endfor -%}
+</span>

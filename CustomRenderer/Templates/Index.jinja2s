@@ -1,0 +1,2 @@
+name: index
+{#<a name="{{ obj.id }}" id="{{ obj.id}}"></a>#}

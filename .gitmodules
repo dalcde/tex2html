@@ -1,0 +1,3 @@
+[submodule "plastex"]
+	path = plastex
+	url = https://github.com/plastex/plastex

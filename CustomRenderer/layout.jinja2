@@ -1,0 +1,103 @@
+{% set links = obj.links %}
+{% set metadata=obj.ownerDocument.userdata %}
+{% set doc = obj.ownerDocument.getElementsByTagName('document')[0] %}
+{% set toc = doc.tableofcontents if config.custom['display-toc'] else None %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="generator" content="plasTeX" />
+  <meta charset="{{ config.files['output-encoding']}}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  {% if obj.title %}
+    {% if links.up.url is not defined %}
+      <title>{{ obj.title }}</title>
+    {% else %}
+      <title>{{ metadata.title }}: {{ obj.title }}</title>
+    {% endif %}
+  {% endif %}
+  {% if links.next.url %}
+    <link rel="next" href="{{ links.next.url }}" title="{{ links.next.title.textContent }}" />
+  {% endif %}
+  {% if links.prev.url %}
+    <link rel="prev" href="{{ links.prev.url }}" title="{{ links.prev.title.textContent }}" />
+  {% endif %}
+  {% if links.up.url %}
+    <link rel="up" href="{{ links.up.url }}" title="{{ links.up.title.textContent }}" />
+  {% endif %}
+  <link href="{{ config.custom['katex-css-path'] }}" rel="stylesheet">
+  <link href="{{ config.custom['font-css-path'] }}" rel="stylesheet">
+<link rel="stylesheet" href="{{ config.custom['css-path'] }}">
+</head>
+
+<body>
+{% if links.up.url is not defined %}
+  <header class="full-header">
+    <p class="title">{{ links.document.title }}</p>
+    {% if metadata.author %}
+      <p class="author">
+        {%for author in metadata.author %}
+          <span>{{ author }}</span>
+        {% endfor %}
+      </p>
+    {% endif %}
+  </header>
+{% else %}
+  <header class="small-header">
+    <div>
+      <span>{{ links.document.title }}</span><span>{{ obj.title }}</span>
+    </div>
+  </header>
+{% endif %}
+<div class="content">
+  {{ obj }}
+
+  {% if obj.tableofcontents %}
+    <nav id="bottom-toc">
+    <h1>Table of Contents</h1>
+    <ul>
+      {% for section in obj.tableofcontents%}
+        <li>{{ section.ref.textContent }}. <a href="{{ section.url }}">{{ section.title }}</a></li>
+      {% endfor %}
+    </ul>
+    </nav>
+  {% endif %}
+
+  {% if obj.footnotes %}
+    <footer id="footnotes">
+      <ol>
+      {% for footnote in obj.footnotes %}
+        <li id="{{ footnote.id }}">{{ footnote }}</li>
+      {% endfor %}
+      </ol>
+    </footer>
+  {% endif %}
+</div>
+
+<nav id="bottomnav">
+  {% if links.prev.url %}
+    <a class="prev-button" href="{{ links.prev.url }}" title="{{ links.prev.title | striptags }}">
+      <svg height="20" width="10">
+        <polyline points="10,20 2,10 10,0" stroke="#c0c0c0" stroke-width="2.5" stroke-linecap="square" fill="none"/>
+      </svg>
+    </a>
+  {% else %}
+    <span></span> {# placeholder for flexbox #}
+  {% endif %}
+
+  {% if links.up.url %}
+    <a class="home-button" href="index.html">Back to front page</a>
+  {% endif %}
+
+  {% if links.next.url %}
+    <a class="next-button" href="{{ links.next.url }}" title="{{ links.next.title | striptags }}">
+      <svg height="20" width="10">
+        <polyline points="0,20 8,10 0,0" stroke="#c0c0c0" stroke-width="2.5" stroke-linecap="square" fill="none"/>
+      </svg>
+    </a>
+  {% else %}
+    <span></span>
+  {% endif %}
+</nav>
+
+</body>
+</html>
