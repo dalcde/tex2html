@@ -16,18 +16,16 @@ class AlignStar(MathEnvironment):
 
             p = self.ownerDocument.createElement('aligned')
             p.macroMode = Command.MODE_BEGIN
-            self.ownerDocument.context.push(p)
 
             return [o, p]
 
         elif self.macroMode == Command.MODE_END:
             p = self.ownerDocument.createElement('aligned')
             p.macroMode = Command.MODE_END
-            self.ownerDocument.context.push(p)
 
             o = self.ownerDocument.createElement('displaymath')
             o.macroMode = Command.MODE_END
-            self.ownerDocument.context.push(o)
+            self.ownerDocument.context.pop(o)
 
             return [p, o]
 
@@ -42,18 +40,16 @@ class GatherStar(MathEnvironment):
 
             p = self.ownerDocument.createElement('gathered')
             p.macroMode = Command.MODE_BEGIN
-            self.ownerDocument.context.push(p)
 
             return [o, p]
 
         elif self.macroMode == Command.MODE_END:
             p = self.ownerDocument.createElement('gathered')
             p.macroMode = Command.MODE_END
-            self.ownerDocument.context.push(p)
 
             o = self.ownerDocument.createElement('displaymath')
             o.macroMode = Command.MODE_END
-            self.ownerDocument.context.push(o)
+            self.ownerDocument.context.pop(o)
 
             return [p, o]
 
