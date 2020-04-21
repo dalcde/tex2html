@@ -74,3 +74,7 @@ class MultlineStar(displaymath):
 
         def invoke(self, tex):
             return []
+
+class qedhere(Command):
+    def invoke(self, tex):
+        return []

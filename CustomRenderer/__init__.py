@@ -11,7 +11,6 @@ import jinja2
 
 ctx = pyduktape.DuktapeContext()
 ctx.eval_js_file("%s/katex.min.js" % os.path.dirname(__file__))
-ctx.eval_js('const macros = { "\\\\qedhere": "", "\\\\fakeqed": "" };')
 
 log = getLogger()
 
@@ -19,9 +18,9 @@ def _katex(string, display):
     string = string.replace("\n", " ")
     ctx.set_globals(input=string)
     if display:
-        return ctx.eval_js("katex.renderToString(input, {displayMode: true, 'macros': macros, throwOnError: false})")
+        return ctx.eval_js("katex.renderToString(input, {displayMode: true, throwOnError: false})")
     else:
-        return ctx.eval_js("katex.renderToString(input, {displayMode: false, 'macros': macros, throwOnError: false})")
+        return ctx.eval_js("katex.renderToString(input, {displayMode: false, throwOnError: false})")
 
 # Monkey patch to use our mathEngine
 _Renderable.displayMath = property(lambda obj: _katex(obj.childrenSource, True), None)

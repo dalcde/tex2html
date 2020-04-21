@@ -25,3 +25,7 @@ class appendices(Command):
 
 class separator(Command):
     pass
+
+class fakeqed(Command):
+    def invoke(self, tex):
+        return []
