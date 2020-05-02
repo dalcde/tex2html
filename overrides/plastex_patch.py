@@ -68,3 +68,6 @@ def newcommand(self, name, nargs=0, definition=None, opt=None):
     self.addGlobal(name, newclass)
 
 Context.newcommand = newcommand
+
+from plasTeX import TeXDocument
+TeXDocument.charsubs = [x for x in TeXDocument.charsubs if x[0] != "'"]
