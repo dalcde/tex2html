@@ -51,6 +51,7 @@ def run(f: Path, target_dir: str, options={}):
         config.set("images", "scale-factor", 1.4)
         config.set("general", "renderer", renderer)
         config.set("files", "directory", tmp_dir)
+        config.set("document", "disable-charsub", "'")
 
         for key, value in options.items():
             config.set("custom", key, value)
