@@ -4,16 +4,18 @@ import argparse
 
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).absolute().parent / "plastex"))
-sys.path.insert(0, str(Path(__file__).absolute().parent / "overrides"))
+sys.path.insert(0, str(Path(__file__).resolve().parent / "plastex"))
+sys.path.insert(0, str(Path(__file__).resolve().parent / "overrides"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import os, shutil
 from distutils.dir_util import copy_tree, mkpath
 from tempfile import TemporaryDirectory
 
-import plastex_patch
+import overrides.plastex_patch
 from plasTeX.Compile import run as run_
 from plasTeX.Config import config as config_base
+import CustomRenderer
 from CustomRenderer.Config import config as config_extra
 
 def rm_tree(d):
@@ -33,7 +35,7 @@ def run(f: Path, target_dir: str, options={}):
 
     print("Compiling {}".format(f.name))
 
-    renderer = str(Path("CustomRenderer").absolute())
+    renderer = str(Path(CustomRenderer.__file__).absolute().parent)
 
     cwd = Path.cwd()
     os.chdir(str(source_dir))
