@@ -16,11 +16,6 @@ from plasTeX.Compile import run as run_
 from plasTeX.Config import config as config_base
 from CustomRenderer.Config import config as config_extra
 
-from plasTeX import TeXDocument
-# Remove this charsub because it breaks search
-TeXDocument.charsubs = [x for x in TeXDocument.charsubs if x[0] != "'"]
-
-
 def rm_tree(d):
     for f in os.listdir(d):
         f = os.path.join(d, f)
