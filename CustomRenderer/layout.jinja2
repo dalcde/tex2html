@@ -56,7 +56,7 @@
     <h1>Table of Contents</h1>
     <ul>
       {% for section in obj.tableofcontents%}
-        <li>{{ section.ref.textContent }}. <a href="{{ section.url }}">{{ section.title }}</a></li>
+        <li>{%- if section.ref.textContent|length-%}<span class="toc-number">{{ section.ref.textContent }}.</span>{%- endif -%}<a href="{{ section.url }}">{{ section.title }}</a></li>
       {% endfor %}
     </ul>
     </nav>

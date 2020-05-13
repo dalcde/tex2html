@@ -174,8 +174,8 @@ nav#bottom-toc ul {
     list-style: none;
     line-height: 1.5;
 }
-nav#bottom-toc a {
-    margin-left: 0.5em;
+nav#bottom-toc span.toc-number {
+    margin-right: 0.5em;
 }
 /************************
  *     Miscellaneous    *
