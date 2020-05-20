@@ -29,6 +29,9 @@ _Renderable.inlineMath = property(lambda obj: _katex(obj.childrenSource, False),
 # Support for Jinja2 templates
 from jinja2 import Environment
 
+EMPTY_PARAGRAPH = re.compile(r'<p>\s*</p>', re.I)
+TABLE_NBSP = re.compile(r'(<(td|th)\b[^>]*>)\s*(</\2>)', re.I)
+
 def jinja2template(s, encoding='utf8'):
     env = Environment(trim_blocks=True, lstrip_blocks=True)
 
@@ -212,10 +215,6 @@ class Renderer(BaseRenderer):
             self.setTemplate('', name)
 
     def processFileContent(self, document, s):
-        # Add width, height, and depth to images
-        s = re.sub(r'&amp;(\S+)-(width|height|depth);(?:&amp;([a-z]+);)?',
-                   self.setImageData, s)
-
         # Convert characters >127 to entities
         if document.config['files']['escape-high-chars']:
             s = list(s)
@@ -225,39 +224,9 @@ class Renderer(BaseRenderer):
             s = ''.join(s)
 
         # Remove empty paragraphs
-        s = re.compile(r'<p>\s*</p>', re.I).sub(r'', s)
+        s = EMPTY_PARAGRAPH.sub(r'', s)
 
         # Add a non-breaking space to empty table cells
-        s = re.compile(r'(<(td|th)\b[^>]*>)\s*(</\2>)', re.I).sub(r'\1&nbsp;\3', s)
+        s = TABLE_NBSP.sub(r'\1&nbsp;\3', s)
 
         return BaseRenderer.processFileContent(self, document, s)
-
-    def setImageData(self, m):
-        """
-        Substitute in width, height, and depth parameters in image tags
-
-        The width, height, and depth parameters aren't known until after
-        all of the output has been generated.  We have to post-process
-        the files to insert this information.  This method replaces
-        the &filename-width;, &filename-height;, and &filename-depth;
-        placeholders with their appropriate values.
-
-        Required Arguments:
-        m -- regular expression match object that contains the filename
-            and the parameter: width, height, or depth.
-
-        Returns:
-        replacement for entity
-
-        """
-        filename, parameter, units = m.group(1), m.group(2), m.group(3)
-
-        try:
-            img = self.imager.images.get(filename, self.vectorImager.images.get(filename, self.imager.staticimages.get(filename)))
-            if img is not None and getattr(img, parameter) is not None:
-                if units:
-                    return getattr(getattr(img, parameter), units)
-                return str(getattr(img, parameter))
-        except KeyError: pass
-
-        return '&%s-%s;' % (filename, parameter)
