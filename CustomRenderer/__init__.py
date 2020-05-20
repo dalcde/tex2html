@@ -56,6 +56,7 @@ class Renderer(BaseRenderer):
     fileExtension = '.html'
     imageTypes = ['.svg', '.png','.jpg','.jpeg','.gif']
     vectorImageTypes = ['.svg']
+    vectorBitmap = False
 
     def __init__(self, *args, **kwargs):
         BaseRenderer.__init__(self, *args, **kwargs)
