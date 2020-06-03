@@ -117,11 +117,11 @@ table p {
  * **********************/
 @-webkit-keyframes a {
     0% { background-color: #d9d9d9 }
-    to { background-color: #fff }
+    to { background-color: #f5f5f5 }
 }
 @keyframes a {
     0% { background-color: #d9d9d9 }
-    to { background-color: #fff }
+    to { background-color: #f5f5f5 }
 }
 div[class$=_thmwrapper] {
     margin-top: 1rem;
