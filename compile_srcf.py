@@ -44,4 +44,4 @@ for f in Path("sources").iterdir():
 
         run(f, str(path), options)
 
-shutil.copy("CustomRenderer/style.css", str(BASE_DIR))
+shutil.copy("plugin/Renderers/CustomRenderer/style.css", str(BASE_DIR))

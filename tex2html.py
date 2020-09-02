@@ -5,18 +5,14 @@ import argparse
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent / "plastex"))
-sys.path.insert(0, str(Path(__file__).resolve().parent / "overrides"))
-sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import os, shutil
 from distutils.dir_util import copy_tree, mkpath
 from tempfile import TemporaryDirectory
 
-import overrides.plastex_patch
 from plasTeX.Compile import run as run_
-from plasTeX.Config import config as config_base
-import CustomRenderer
-from CustomRenderer.Config import config as config_extra
+from plasTeX.Config import defaultConfig
+from plugin.Renderers.CustomRenderer.Config import addConfig
 
 def rm_tree(d):
     for f in os.listdir(d):
@@ -35,23 +31,23 @@ def run(f: Path, target_dir: str, options={}):
 
     print("Compiling {}".format(f.name))
 
-    renderer = str(Path(CustomRenderer.__file__).absolute().parent)
-
     cwd = Path.cwd()
     os.chdir(str(source_dir))
 
     with TemporaryDirectory() as tmp_dir:
-        config = config_base.copy() + config_extra
+        config = defaultConfig()
+        addConfig(config)
 
-        config.set("images", "imager", "gspdfpng")
-        config.set("images", "vector-imager", "pdf2svg")
-        config.set("images", "scale-factor", 1.4)
-        config.set("general", "renderer", renderer)
-        config.set("files", "directory", tmp_dir)
-        config.set("document", "disable-charsub", "'")
+        config["images"]["imager"] = "gspdfpng"
+        config["images"]["vector-imager"] = "pdf2svg"
+        config["images"]["scale-factor"] = 1.4
+        config["general"]["renderer"] = "CustomRenderer"
+        config["general"]["plugins"] = ["plugin"]
+        config["files"]["directory"] = tmp_dir
+        config["document"]["disable-charsub"] = "'"
 
         for key, value in options.items():
-            config.set("custom", key, value)
+            config["custom"][key] = value
 
         run_(f.name, config)
 
