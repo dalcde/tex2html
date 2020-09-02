@@ -42,6 +42,7 @@ def run(f: Path, target_dir: str, options={}):
         config["images"]["vector-imager"] = "pdf2svg"
         config["images"]["scale-factor"] = 1.4
         config["general"]["renderer"] = "CustomRenderer"
+        config["general"]["load-tex-packages"] = False
         config["general"]["plugins"] = ["plugin"]
         config["files"]["directory"] = tmp_dir
         config["document"]["disable-charsub"] = "'"
