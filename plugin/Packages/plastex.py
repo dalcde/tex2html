@@ -1,7 +1,14 @@
 from plasTeX import Command, VerbatimEnvironment
+from plasTeX.Tokenizer import EscapeSequence
 
 class useimager(VerbatimEnvironment):
     pass
+
+class info(Command):
+    def invoke(self, tex):
+        text = tex.readArgument()
+        tex.pushToken(EscapeSequence("footnote"))
+        return text
 
 class tph(Command):
     doCharSubs = False
