@@ -6,6 +6,7 @@ import plasTeX.Renderers.HTML5
 from plasTeX.Renderers import Renderer as BaseRenderer
 from plasTeX.Renderers import Renderable as _Renderable
 from plasTeX.Logging import getLogger
+from plasTeX.Base.LaTeX.Packages import documentclass
 import pyduktape
 import jinja2
 
@@ -100,6 +101,15 @@ class Renderer(BaseRenderer):
     def render(self, document):
         """ Load templates and render the document """
         self.loadTemplates(document)
+
+        # Better support oversized images, if sidewaysfigure is used
+        for item in document:
+            if isinstance(item, documentclass):
+                if item.argSource[0] == '[':
+                    item.argSource = '[fullpage,' + item.argSource[1:]
+                else:
+                    item.argSource = '[fullpage]' + item.argSource
+
         BaseRenderer.render(self, document)
 
     def importDirectory(self, templatedir: Path):

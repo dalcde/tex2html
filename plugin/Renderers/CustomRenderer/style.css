@@ -113,6 +113,29 @@ table p {
     margin: 0;
 }
 /************************
+ *        Figure        *
+ * **********************/
+figcaption {
+    text-align: center;
+    margin-bottom: 2em;
+}
+span.caption_title {
+    font-weight: bold;
+}
+span.caption_ref {
+    font-weight: bold;
+}
+span.caption_ref:after {
+    content: '.';
+}
+div.sseq > img {
+    /* First move the image to start at the middle of the parent */
+    margin-left: 50%;
+    /* Now shift it to the left by 50% of the image itself, but not more than 50% of the viewport width to avoid cropping */
+    transform: translateX(max(-50vw, -50%));
+}
+
+/************************
  *  Theorem Environment *
  * **********************/
 @-webkit-keyframes a {
